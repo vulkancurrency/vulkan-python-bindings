@@ -47,8 +47,9 @@ set(CMAKE_C_FLAGS_RELEASE "-O3")
 add_subdirectory(external/vulkan)
 include_directories(external/vulkan/src)
 
-# explicitly include the libsodium directories
+# explicitly include directories
 include_directories(${SODIUM_INCLUDE_DIR})
+include_directories(${OPENSSL_INCLUDE_DIR})
 
 # find the cython source files
 file(GLOB_RECURSE CYTHON_FILES src/*.pyx src/*.pxd)

@@ -23,15 +23,20 @@
 # You should have received a copy of the MIT License
 # along with Vulkan. If not, see <https://opensource.org/licenses/MIT>.
 
-# common modules
-include "common/buffer.pyx"
-include "common/util.pyx"
+from libc.stdint cimport *
 
-# crypto modules
-include "crypto/cryptoutil.pyx"
+cdef extern from "core/pow.h":
+    void free_pow_limit_bn()
+    int check_proof_of_work(const uint8_t *hash, uint32_t bits)
 
-# core modules
-include "core/transaction.pyx"
-include "core/block.pyx"
-include "core/blockchain.pyx"
-include "core/pow.pyx"
+cdef class ProofOfWork(object):
+
+    cpdef bint check_proof_of_work(self, bytes hash, uint64_t bits):
+        cdef const char* raw_hash = PyBytes_AsString(hash)
+        return check_proof_of_work(<const uint8_t*>raw_hash, bits)
+
+    def __del__(self):
+        # free the proof of work limit bignum allocated when calling
+        # "check_proof_of_work" which prevents us from having to reallocate
+        # the pow limit bignum each time...
+        free_pow_limit_bn()
