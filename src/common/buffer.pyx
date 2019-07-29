@@ -170,7 +170,7 @@ cdef class Buffer(object):
             assert(offset >= 0)
             buffer_set_offset(self._buffer, offset)
 
-    cpdef copy(self, Buffer other_buffer):
+    cpdef void copy(self, Buffer other_buffer):
         assert(isinstance(other_buffer, Buffer))
         cdef int result = buffer_copy(self._buffer, other_buffer._buffer)
         if result == 1:
@@ -180,10 +180,10 @@ cdef class Buffer(object):
         assert(isinstance(other_buffer, Buffer))
         return buffer_compare(self._buffer, other_buffer._buffer)
 
-    cpdef clear(self):
+    cpdef void clear(self):
         buffer_clear(self._buffer)
 
-    cpdef write(self, bytes data):
+    cpdef void write(self, bytes data):
         assert(isinstance(data, bytes))
         assert(len(data) > 0)
         cdef const char *raw_data = PyBytes_AsString(data)
@@ -194,47 +194,47 @@ cdef class Buffer(object):
         if result == 1:
             raise BufferError("Failed to write data to buffer!")
 
-    cpdef write_uint8(self, uint8_t value):
+    cpdef void write_uint8(self, uint8_t value):
         cdef int result = buffer_write_uint8(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write uint8 to buffer!")
 
-    cpdef write_int8(self, int8_t value):
+    cpdef void write_int8(self, int8_t value):
         cdef int result = buffer_write_int8(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write int8 to buffer!")
 
-    cpdef write_uint16(self, uint16_t value):
+    cpdef void write_uint16(self, uint16_t value):
         cdef int result = buffer_write_uint16(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write uint16 to buffer!")
 
-    cpdef write_int16(self, int16_t value):
+    cpdef void write_int16(self, int16_t value):
         cdef int result = buffer_write_int16(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write int16 to buffer!")
 
-    cpdef write_uint32(self, uint32_t value):
+    cpdef void write_uint32(self, uint32_t value):
         cdef int result = buffer_write_uint32(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write uint32 to buffer!")
 
-    cpdef write_int32(self, int32_t value):
+    cpdef void write_int32(self, int32_t value):
         cdef int result = buffer_write_int32(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write int32 to buffer!")
 
-    cpdef write_uint64(self, uint64_t value):
+    cpdef void write_uint64(self, uint64_t value):
         cdef int result = buffer_write_uint64(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write uint64 to buffer!")
 
-    cpdef write_int64(self, int64_t value):
+    cpdef void write_int64(self, int64_t value):
         cdef int result = buffer_write_int64(self._buffer, value)
         if result == 1:
             raise BufferError("Failed to write int64 to buffer!")
 
-    cpdef write_bytes(self, bytes data):
+    cpdef void write_bytes(self, bytes data):
         assert(isinstance(data, bytes))
         assert(len(data) > 0)
         assert(len(data) <= UINT32_MAX)
@@ -246,7 +246,7 @@ cdef class Buffer(object):
         if result == 1:
             raise BufferError("Failed to write bytes32 to buffer!")
 
-    cpdef write_string(self, str data):
+    cpdef void write_string(self, str data):
         assert(isinstance(data, str))
         assert(len(data) > 0)
         assert(len(data) <= UINT32_MAX)
@@ -258,7 +258,7 @@ cdef class Buffer(object):
         if result == 1:
             raise BufferError("Failed to write string32 to buffer!")
 
-    cpdef write_bytes_long(self, bytes data):
+    cpdef void write_bytes_long(self, bytes data):
         assert(isinstance(data, bytes))
         assert(len(data) > 0)
         assert(len(data) <= UINT64_MAX)
@@ -270,7 +270,7 @@ cdef class Buffer(object):
         if result == 1:
             raise BufferError("Failed to write bytes64 to buffer!")
 
-    cpdef write_string_long(self, str data):
+    cpdef void write_string_long(self, str data):
         assert(isinstance(data, str))
         assert(len(data) > 0)
         assert(len(data) <= UINT64_MAX)
@@ -317,7 +317,7 @@ cdef class BufferIterator(object):
         assert(isinstance(other_buffer_iterator, BufferIterator))
         return buffer_iterator_compare(self._buffer_iterator, other_buffer_iterator._buffer_iterator)
 
-    cpdef clear(self):
+    cpdef void clear(self):
         buffer_iterator_clear(self._buffer_iterator)
         self._buffer = None
 
