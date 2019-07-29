@@ -132,7 +132,6 @@ cdef class Buffer(object):
 
     def __cinit__(self, bytes data=bytes(), size_t offset=0):
         assert(isinstance(data, bytes))
-        assert(offset >= 0)
         self._buffer = buffer_init_data(offset, data, len(data))
 
     property data:
@@ -159,7 +158,6 @@ cdef class Buffer(object):
             return <Py_ssize_t>buffer_get_size(self._buffer)
 
         def __set__(self, size_t size):
-            assert(size >= 0)
             buffer_set_size(self._buffer, size)
 
     property offset:
@@ -167,7 +165,6 @@ cdef class Buffer(object):
             return <Py_ssize_t>buffer_get_offset(self._buffer)
 
         def __set__(self, size_t offset):
-            assert(offset >= 0)
             buffer_set_offset(self._buffer, offset)
 
     cpdef void copy(self, Buffer other_buffer):
@@ -310,7 +307,6 @@ cdef class BufferIterator(object):
             return <Py_ssize_t>buffer_iterator_get_offset(self._buffer_iterator)
 
         def __set__(self, size_t offset):
-            assert(offset >= 0)
             buffer_iterator_set_offset(self._buffer_iterator, offset)
 
     cpdef bint compare(self, BufferIterator other_buffer_iterator):
@@ -322,7 +318,6 @@ cdef class BufferIterator(object):
         self._buffer = None
 
     cpdef bytes read(self, size_t size):
-        assert(size > 0);
         cdef uint8_t *data = NULL
         cdef int result = buffer_read(self._buffer_iterator, size, &data)
         if result == 1:
